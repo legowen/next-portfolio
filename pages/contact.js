@@ -2,7 +2,7 @@ import React from "react";
 import Layout from "@/components/layout";
 import Head from "next/head";
 
-export default function projects() {
+export default function contact() {
   return (
     <Layout>
       <Head>
@@ -10,9 +10,6 @@ export default function projects() {
         <meta name="description" content="legowen" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-        My Projects
-
     </Layout>
   );
 }
