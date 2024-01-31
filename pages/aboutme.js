@@ -1,10 +1,31 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import Layout from "@/components/layout";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function Aboutme() {
+  const containersRef = useRef(null);
+
+  useEffect(() => {
+    const containers = containersRef.current;
+
+    const handleMouseMove = (e) => {
+      const rect = containers.getBoundingClientRect();
+      const x = e.pageX - rect.left;
+      const y = e.pageY - rect.top;
+      const rotateY = (-1 / 5) * x + 20;
+      const rotateX = (4 / 30) * y - 20;
+      containers.style.transform = `perspective(350px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    };
+
+    containers.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      containers.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
   return (
     <Layout>
       <Head>
@@ -15,8 +36,14 @@ export default function Aboutme() {
 
       <section className="flex min-h-screen flex-col items-center justify-center text-gray-600 body-font">
         <div className="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
-          <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
-            <Image src="/Profile.png" width={500} height={500} alt="Profile" />
+          <div ref={containersRef} className="containers">
+            <Image
+              className="card"
+              src="/Profile.png"
+              width={500}
+              height={500}
+              alt="Profile"
+            />
           </div>
           <div className="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
             <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
