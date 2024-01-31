@@ -1,28 +1,38 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Layout from "@/components/layout";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function Aboutme() {
-  const containersRef = useRef(null);
+  const containerRef = useRef(null);
+  const overlayRef = useRef(null);
 
   useEffect(() => {
-    const containers = containersRef.current;
+    const container = containerRef.current;
+    const overlay = overlayRef.current;
 
     const handleMouseMove = (e) => {
-      const rect = containers.getBoundingClientRect();
-      const x = e.pageX - rect.left;
-      const y = e.pageY - rect.top;
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
       const rotateY = (-1 / 5) * x + 20;
       const rotateX = (4 / 30) * y - 20;
-      containers.style.transform = `perspective(350px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      overlay.style.backgroundPosition = `${x / 5 + y / 5}%`;
+      container.style.transform = `perspective(350px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     };
 
-    containers.addEventListener("mousemove", handleMouseMove);
+    const handleMouseOut = () => {
+      overlay.style.filter = "opacity(0)";
+      container.style.transform = "perspective(350px) rotateY(0deg) rotateX(0deg)";
+    };
+
+    container.addEventListener("mousemove", handleMouseMove);
+    container.addEventListener("mouseout", handleMouseOut);
 
     return () => {
-      containers.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("mouseout", handleMouseOut);
     };
   }, []);
 
@@ -36,14 +46,38 @@ export default function Aboutme() {
 
       <section className="flex min-h-screen flex-col items-center justify-center text-gray-600 body-font">
         <div className="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
-          <div ref={containersRef} className="containers">
-            <Image
-              className="card"
-              src="/Profile.png"
-              width={500}
-              height={500}
-              alt="Profile"
-            />
+          <div className="container relative overflow-hidden" ref={containerRef}>
+            <style jsx>{`
+              .container {
+                width: 220px;
+                height: 310px;
+                transition: all 0.1s;
+              }
+              .overlay {
+                position: absolute;
+                width: 220px;
+                height: 310px;
+                background: linear-gradient(
+                  105deg,
+                  transparent 40%, rgba(255, 219, 112, 0.8) 20%,
+                  rgba(132, 50, 255, 0.6) 20%,
+                  transparent 54%
+                );
+                filter: brightness(1.2) opacity(0.8);
+                mix-blend-mode: color-dodge;
+                background-size: 150% 150%;
+                background-position: 100%;
+                transition: all 0.1s;
+              }
+              .card {
+                width: 220px;
+                height: 310px;
+                background-image: url("/Profile.png"); // Adjust the path accordingly
+                background-size: cover;
+              }
+            `}</style>
+            <div className="overlay" ref={overlayRef}></div>
+            <Image className="card" src="/Profile.png" width={500} height={500} alt="Profile" />
           </div>
           <div className="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
             <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
