@@ -2,6 +2,7 @@ import React from "react";
 import Layout from "@/components/layout";
 import Head from "next/head";
 import { TOKEN, DATABASE_ID } from "@/config";
+import ProjectItem from "@/components/projects/projectItem";
 
 export default function projects({ projects }) {
   console.log(projects);
@@ -16,7 +17,7 @@ export default function projects({ projects }) {
       <h1>My Projects : {projects.results.length} </h1>
 
       {projects.results.map((aProject) => (
-        <h1>{aProject.properties.이름.title[0].plain_text}</h1>
+        <ProjectItem key={aProject.id} data={aProject}/>
       ))}
     </Layout>
   );
