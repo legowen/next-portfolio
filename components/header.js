@@ -26,8 +26,8 @@ export default function Header() {
               About Me
             </Link>
 
-            <Link href="/contact" className="mr-5 hover:text-gray-900">
-              Contact
+            <Link href="/resume" className="mr-5 hover:text-gray-900">
+              Resume
             </Link>
           </nav>
           <DarkModeToggleButton />
