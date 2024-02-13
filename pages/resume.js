@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "@/components/layout";
 import Head from "next/head";
+import Link from "next/link";
 
 export default function resume() {
   return (
@@ -12,11 +13,15 @@ export default function resume() {
       </Head>
 
       <main>
-        <h1>My Resume</h1>
         <p>This is my resume. Click the link below to download.</p>
-        {/* <Link href="/path/to/your/resume.pdf">
-          <a target="_blank" rel="noopener noreferrer">Download Resume PDF</a>
-        </Link> */}
+        <object
+          data="/Resume.pdf"
+          type="application/pdf"
+          width="100%"
+          height="600px"
+        >
+          Your browser doesn't support embedded PDFs.
+        </object>
       </main>
     </Layout>
   );
