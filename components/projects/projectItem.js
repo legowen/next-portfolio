@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function projectItem({ data }) {
   const title = data.properties.이름.title[0].plain_text;
-  const github = data.properties.Github.url;
+  const github = data.properties.Github.link?.url;
   const description = data.properties.Description.rich_text[0];
   const imgSrc = data.cover.file?.url || data.cover.external.url;
   const tags = data.properties.태그.multi_select;
